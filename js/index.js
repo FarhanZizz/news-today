@@ -61,13 +61,13 @@ const showNews = (id) => {
                          <div>                         
                             👁${newsViews}
                          </div>
-                         <div>                         
+                         <div>                   <!-- Modal BUTTON -->     
                            <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${news._id}">Show details</button>
                          </div>
 
                     </div>
                 </div >
-            </div >
+            </div >             <!-- Modal -->
             <div class="modal fade" id="exampleModal${news._id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
