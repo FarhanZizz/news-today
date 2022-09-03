@@ -22,6 +22,10 @@ function showNews(id) {
         newsCount.innerText = `${data.length} Items Found For Selected Category `
         const newsContainer = document.getElementById('news-container');
         newsContainer.innerHTML = '';
+        console.log(data)
+        data.sort((a, b) => {
+            return b.total_view - a.total_view;
+        });
         for (const news of data) {
             console.log(news)
             const div = document.createElement("div");
