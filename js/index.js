@@ -17,8 +17,6 @@ const showNews = (id) => {
     fetch(`https://openapi.programming-hero.com/api/news/category/${id}`)
         .then(res => res.json())
         .then(data => news(data.data))
-
-
     const news = (data) => {
         // showing how many news does each category have 
         const newsCount = document.getElementById('news-count')
@@ -29,7 +27,7 @@ const showNews = (id) => {
         const newsContainer = document.getElementById('news-container');
         newsContainer.innerHTML = '';
         for (const news of data) {
-            console.log(news)
+            console.log(news._id)
             const div = document.createElement("div");
             div.classList.add("card", "my-3");
             // error handler for when authorname or newsviews data has no value  
@@ -63,9 +61,30 @@ const showNews = (id) => {
                          <div>                         
                             👁${newsViews}
                          </div>
+                         <div>                         
+                           <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal${news._id}">Show details</button>
+                         </div>
+
                     </div>
                 </div >
-            </div > `
+            </div >
+            <div class="modal fade" id="exampleModal${news._id}" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">${news.title}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="${news.image_url}" class=" img-fluid rounded">
+                                    <p>${news.details}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div> `
             newsContainer.appendChild(div);
         }
     }
