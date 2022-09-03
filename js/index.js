@@ -1,35 +1,38 @@
+// Fetching Categories & showing them as Buttons 
 fetch('https://openapi.programming-hero.com/api/news/categories')
     .then(res => res.json())
     .then(data => categoryMaker(data.data.news_category))
 
-function categoryMaker(categories) {
+const categoryMaker = (categories) => {
     const categoryContainer = document.getElementById('category-container');
     for (const category of categories) {
         const div = document.createElement("div");
         div.innerHTML = `
-        <button onclick="showNews('${category.category_id}')" class="btn btn-light fw-semibold"> ${category.category_name} </button>
-        `
+        <button onclick="showNews('${category.category_id}')" class="btn btn-light fw-semibold"> ${category.category_name}</button>`
         categoryContainer.appendChild(div)
-
     }
 }
-function showNews(id) {
+// Fetching Category news and showing them
+const showNews = (id) => {
     fetch(`https://openapi.programming-hero.com/api/news/category/${id}`)
         .then(res => res.json())
         .then(data => news(data.data))
+
+
     const news = (data) => {
+        // showing how many news does each category have 
         const newsCount = document.getElementById('news-count')
         newsCount.innerText = `${data.length} Items Found For Selected Category `
+        // sorts the data array by views in decending order
+        data.sort((a, b) => { return b.total_view - a.total_view; });
+        // creating a new Element with the data inside and appending it 
         const newsContainer = document.getElementById('news-container');
         newsContainer.innerHTML = '';
-        console.log(data)
-        data.sort((a, b) => {
-            return b.total_view - a.total_view;
-        });
         for (const news of data) {
             console.log(news)
             const div = document.createElement("div");
             div.classList.add("card", "my-3");
+            // error handler for when authorname or newsviews data has no value  
             let authorName = news.author.name;
             let newsViews = news.total_view;
             if (authorName === "" || authorName == null) {
@@ -38,7 +41,6 @@ function showNews(id) {
             if (newsViews === "" || newsViews == null) {
                 newsViews = "No Data Found"
             }
-            div.innerHTML = ``
             div.innerHTML = `
             <div class="d-flex justify-content-around align-items-center rounded">
                 <div class="w-75">
@@ -65,7 +67,6 @@ function showNews(id) {
                 </div >
             </div > `
             newsContainer.appendChild(div);
-
         }
     }
 }
