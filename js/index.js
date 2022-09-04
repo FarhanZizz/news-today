@@ -2,6 +2,7 @@
 fetch('https://openapi.programming-hero.com/api/news/categories')
     .then(res => res.json())
     .then(data => categoryMaker(data.data.news_category))
+    .catch((error) => { console.error('Error:', error); })
 
 const categoryMaker = (categories) => {
     const categoryContainer = document.getElementById('category-container');
@@ -18,6 +19,7 @@ const showNews = (id) => {
     fetch(`https://openapi.programming-hero.com/api/news/category/${id}`)
         .then(res => res.json())
         .then(data => news(data.data))
+        .catch((error) => { console.error('Error:', error); });
     const news = (data) => {
         // showing how many news does each category have 
         const newsCount = document.getElementById('news-count')
@@ -33,11 +35,15 @@ const showNews = (id) => {
             // error handler for when authorname or newsviews data has no value  
             let authorName = news.author.name;
             let newsViews = news.total_view;
+            let publishDate = news.author.published_date
             if (authorName === "" || authorName == null) {
                 authorName = "No Data Found"
             }
             if (newsViews === "" || newsViews == null) {
                 newsViews = "No Data Found"
+            }
+            if (publishDate === "" || publishDate == null) {
+                publishDate = "No Data Found"
             }
             div.innerHTML = `
             <div class="row align-items-center rounded">
@@ -72,8 +78,10 @@ const showNews = (id) => {
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                <img src="${news.image_url}" class=" img-fluid rounded">
-                                    <p>${news.details}</p>
+                                <h5>Publisher : ${authorName}</h5>
+                                <h5>Published : ${publishDate}</h5>
+                                <h5>Views : ${newsViews}<h5>
+                                <h5>Ratings : ${news.rating.number}/ 5<h5>
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
