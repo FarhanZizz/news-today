@@ -14,6 +14,7 @@ const categoryMaker = (categories) => {
 }
 // Fetching Category news and showing them
 const showNews = (id) => {
+    toggleSpinner(true);
     fetch(`https://openapi.programming-hero.com/api/news/category/${id}`)
         .then(res => res.json())
         .then(data => news(data.data))
@@ -27,7 +28,6 @@ const showNews = (id) => {
         const newsContainer = document.getElementById('news-container');
         newsContainer.innerHTML = '';
         for (const news of data) {
-            console.log(news._id)
             const div = document.createElement("div");
             div.classList.add("card", "my-3");
             // error handler for when authorname or newsviews data has no value  
@@ -40,11 +40,11 @@ const showNews = (id) => {
                 newsViews = "No Data Found"
             }
             div.innerHTML = `
-            <div class="d-flex justify-content-around align-items-center rounded">
-                <div class="w-75">
+            <div class="row align-items-center rounded">
+                <div class="col-12 col-lg-5">
                     <img src="${news.image_url}" class=" img-fluid rounded">
                 </div>
-                <div class="">
+                <div class="col-12 col-lg-7">
                     <div class="card-body">
                     <h5 class="card-title">${news.title}</h5>
                     <p class="card-text">${news.details.slice(0, 200)}...</p>
@@ -54,10 +54,6 @@ const showNews = (id) => {
                         <img style="width: 40px; border-radius: 50%" class="mx-2" src="${news.author.img}">
                              <span>${authorName}</span >
                          </div >
-                    
-                         <div>
-                         ★${news.rating.number}/5
-                         </div>
                          <div>                         
                             👁${newsViews}
                          </div>
@@ -87,5 +83,16 @@ const showNews = (id) => {
                 </div> `
             newsContainer.appendChild(div);
         }
+        toggleSpinner(false);
+    }
+}
+// SPINNER
+const toggleSpinner = (isLoading) => {
+    const spinner = document.getElementById('spinner');
+    if (isLoading) {
+        spinner.classList.remove("d-none");
+    }
+    else {
+        spinner.classList.add("d-none");
     }
 }
